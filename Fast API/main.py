@@ -1,5 +1,6 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel
+from typing import Optional
 
 app = FastAPI()
 
@@ -29,9 +30,17 @@ items = [
 ]
 
 # Listar todos os produtos (GET)
-@app.get("/produtos", response_model=list[Item])
-def listar_produtos():
-    return items
+@app.get("/produtos")
+def listar_produtos(categoria: Optional[str] = None, min_preco: Optional[float] = Query(None, description="Preço mínimo"), max_preco: Optional[float] = Query(None, description="Preço máximo")):
+
+    resultado = items
+    if min_preco is not None:
+        resultado = [p for p in resultado if p["preco"] >= min_preco]
+
+    if max_preco is not None:
+        resultado = [p for p in resultado if p["preco"] <= max_preco]
+
+    return {"produtos": resultado}
 
 # Listar produto por ID (GET)
 @app.get("/produtos/{item_id}", response_model=Item)
@@ -68,6 +77,8 @@ def remover_produto(item_id: int):
     raise HTTPException(status_code=404, detail="Produto não encontrado")
 
 # Rodar servidor:
-# uvicorn aula4_crud_completo:app --reload
+# .venv\Scripts\Activate
+  
+# uvicorn main:app --reload
 
 # Acesse a documentação da API em http://localhost:8000/docs
