@@ -103,6 +103,7 @@ def remover_produto(item_id: int):
     raise HTTPException(status_code=404, detail="Produto não encontrado")
 
 # Rodar servidor:
+
 # .venv\Scripts\Activate
   
 # uvicorn main:app --reload
