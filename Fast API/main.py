@@ -35,10 +35,10 @@ def listar_produtos(categoria: Optional[str] = None, min_preco: Optional[float] 
 
     resultado = items
     if min_preco is not None:
-        resultado = [p for p in resultado if p["preco"] >= min_preco]
+        resultado = [p for p in resultado if p.preco >= min_preco]
 
     if max_preco is not None:
-        resultado = [p for p in resultado if p["preco"] <= max_preco]
+        resultado = [p for p in resultado if p.preco <= max_preco]
 
     return {"produtos": resultado}
 
